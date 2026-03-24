@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h2>Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<div class="center">
+  <h3 id="wallet"></h3>
+  <h1 id="points">0</h1>
+
+  <button onclick="claim()">Claim Airdrop</button>
+</div>
+
+<script>
+const wallet = localStorage.getItem("wallet");
+
+if (!wallet) {
+  window.location.href = "index.html";
+}
+
+document.getElementById("wallet").innerText = wallet;
+
+function logout() {
+  localStorage.removeItem("wallet");
+  window.location.href = "index.html";
+}
+
+function claim() {
+  let points = parseInt(document.getElementById("points").innerText);
+  points += 50;
+  document.getElementById("points").innerText = points;
+}
+</script>
+
+</body>
+</html>
