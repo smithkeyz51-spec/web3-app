@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(#0a0015, #1a0033);
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.center {
+  text-align: center;
+  margin-top: 100px;
+}
+
+button {
+  padding: 15px 30px;
+  border-radius: 10px;
+  border: none;
+  background: purple;
+  color: white;
+  margin-top: 20px;
+}
+
+nav {
+  position: fixed;
+  bottom: 10px;
+  width: 90%;
+  left: 5%;
+  display: flex;
+  justify-content: space-around;
+  background: #120022;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.active {
+  color: white;
+}
