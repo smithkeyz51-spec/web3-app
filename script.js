@@ -1,19 +1,22 @@
 // script.js
 
-// Your Render backend URL
 const backendUrl = "https://web3-backend-7xoj.onrender.com";
 
-// ------------------ LOGIN FUNCTION ------------------
-async function login(wallet) {
+// ------------------ CONNECT WALLET FUNCTION ------------------
+async function connectWallet() {
+  const wallet = prompt("Enter your wallet address:");
+  if (!wallet) return;
+
+  // Login or create user
   try {
     const res = await fetch(`${backendUrl}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ wallet })
     });
-    const data = await res.json();
-    console.log("Login response:", data);
-    alert(`Welcome ${wallet}! You have ${data.points} points.`);
+    const user = await res.json();
+    console.log("Login:", user);
+    alert(`Welcome ${wallet}! You have ${user.points} points.`);
   } catch (err) {
     console.error(err);
     alert("Login failed. Try again!");
@@ -21,7 +24,10 @@ async function login(wallet) {
 }
 
 // ------------------ CLAIM AIRDROP FUNCTION ------------------
-async function claim(wallet) {
+async function claimAirdrop() {
+  const wallet = prompt("Enter your wallet address:");
+  if (!wallet) return;
+
   try {
     const res = await fetch(`${backendUrl}/claim`, {
       method: "POST",
@@ -29,39 +35,43 @@ async function claim(wallet) {
       body: JSON.stringify({ wallet })
     });
     const data = await res.json();
-    console.log("Claim response:", data);
+    console.log("Claim:", data);
     alert(`Airdrop claimed! You now have ${data.points} points.`);
   } catch (err) {
     console.error(err);
-    alert("Claim failed. Try again!");
+    alert("Airdrop failed. Try again!");
   }
 }
 
 // ------------------ GET USER DATA FUNCTION ------------------
-async function getUser(wallet) {
+async function getUserData() {
+  const wallet = prompt("Enter your wallet address:");
+  if (!wallet) return;
+
   try {
     const res = await fetch(`${backendUrl}/user/${wallet}`);
     const data = await res.json();
     console.log("User data:", data);
-    alert(`User: ${wallet}\nPoints: ${data.points}\nTasks Completed: ${data.tasksCompleted}`);
+    alert(`Wallet: ${wallet}\nPoints: ${data.points}\nTasks Completed: ${data.tasksCompleted}`);
   } catch (err) {
     console.error(err);
     alert("Failed to get user data.");
   }
 }
 
-// ------------------ BUTTON EVENT LISTENERS ------------------
-document.querySelector("#login-btn")?.addEventListener("click", () => {
-  const wallet = prompt("Enter your wallet address:");
-  if (wallet) login(wallet);
-});
+// ------------------ HOOK BUTTONS ------------------
 
-document.querySelector("#claim-btn")?.addEventListener("click", () => {
-  const wallet = prompt("Enter your wallet address:");
-  if (wallet) claim(wallet);
-});
+// Connect Wallet button in your center div
+document.querySelector(".center button")?.addEventListener("click", connectWallet);
 
-document.querySelector("#get-user-btn")?.addEventListener("click", () => {
-  const wallet = prompt("Enter your wallet address:");
-  if (wallet) getUser(wallet);
+// Footer nav buttons
+const navItems = document.querySelectorAll("nav span");
+navItems.forEach((item) => {
+  const text = item.textContent.trim().toLowerCase();
+  if (text === "wallet") {
+    item.addEventListener("click", getUserData);
+  } else if (text === "airdrop") {
+    item.addEventListener("click", claimAirdrop);
+  } 
+  // Home and Swap can stay for navigation only
 });
